@@ -1,0 +1,55 @@
+# Requires a GitLab Runner configured with the Docker executor.
+# The Zephyr CI image is pulled from GHCR automatically on first use;
+# Docker caches the image layers on the runner host so subsequent runs are fast.
+# No Dockerfile is needed.
+#
+# Pin to a specific tag (e.g. v0.27.4) instead of 'latest' for reproducibility.
+image: ghcr.io/zephyrproject-rtos/ci:latest
+
+variables:
+  # Keep ccache inside the project dir so GitLab CI can cache it between pipelines
+  CCACHE_DIR: "$CI_PROJECT_DIR/.ccache"
+  CCACHE_MAXSIZE: "500M"
+
+stages:
+  - build
+  - test
+
+# Shared template: initialises the west workspace and caches compiler output.
+# west init -l . treats the checked-out repo as the manifest, creating the
+# workspace in the parent directory (where it finds west.yml).
+.west_setup:
+  before_script:
+    - west init -l .
+    - west update --narrow --fetch-opt=--depth=1
+  cache:
+    key: "ccache-$CI_COMMIT_REF_SLUG"
+    paths:
+      - .ccache/
+
+build:
+  extends: .west_setup
+  stage: build
+  parallel:
+    matrix:
+      - BOARD: [nucleo_h563zi, nucleo_h753zi]
+  script:
+    - west build -b $BOARD app
+  artifacts:
+    name: "firmware-$BOARD"
+    paths:
+      - build/zephyr/zephyr.elf
+    expire_in: 1 week
+
+test:
+  extends: .west_setup
+  stage: test
+  script:
+    - west twister -T tests -v --inline-logs --integration
+  artifacts:
+    when: always
+    paths:
+      - twister-out/
+    reports:
+      junit: twister-out/**/twister.xml
+    expire_in: 1 week
