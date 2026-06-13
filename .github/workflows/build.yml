@@ -3,6 +3,10 @@ name: Build
 on:
   push:
   pull_request:
+  workflow_dispatch:
+
+env:
+  PROJECT_NAME: rover-vcu-fw
 
 permissions:
   contents: read
@@ -42,7 +46,11 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: firmware-${{ matrix.board }}
-          path: example-application/build/zephyr/zephyr.elf
+          path: |
+            example-application/build/zephyr/zephyr.elf
+            example-application/build/zephyr/zephyr.bin
+            example-application/build/zephyr/zephyr.hex
+          if-no-files-found: warn
 
   test:
     name: Twister Tests
@@ -69,3 +77,48 @@ jobs:
       - name: Twister Tests
         working-directory: example-application
         run: west twister -T tests -v --inline-logs --integration
+
+  release:
+    name: Release
+    needs: [build, test]
+    runs-on: ubuntu-22.04
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Bump version with Commitizen
+        id: cz
+        uses: commitizen-tools/commitizen-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          changelog_increment_filename: _changelog_body.md
+
+      - name: Download firmware artifacts
+        if: steps.cz.outputs.version != ''
+        uses: actions/download-artifact@v4
+        with:
+          pattern: firmware-*
+          path: firmware
+
+      - name: Package firmware release
+        if: steps.cz.outputs.version != ''
+        run: |
+          mkdir -p ${{ env.PROJECT_NAME }}-${{ steps.cz.outputs.version }}
+          cp -r firmware/* ${{ env.PROJECT_NAME }}-${{ steps.cz.outputs.version }}/
+          tar -czf ${{ env.PROJECT_NAME }}_fw-release_v${{ steps.cz.outputs.version }}.tar.gz \
+            ${{ env.PROJECT_NAME }}-${{ steps.cz.outputs.version }}
+
+      - name: Create GitHub release
+        if: steps.cz.outputs.version != ''
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.cz.outputs.version }}
+          name: Release ${{ steps.cz.outputs.version }}
+          body_path: _changelog_body.md
+          files: ${{ env.PROJECT_NAME }}_fw-release_v${{ steps.cz.outputs.version }}.tar.gz
