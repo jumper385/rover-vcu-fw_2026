@@ -10,6 +10,38 @@ The main design rule is:
 
 That means the firmware does not blindly forward network commands to motors or actuators. Commands are checked for freshness, sequence, range, operating mode, and safety state before any downstream output is updated.
 
+## Getting Started
+### Initialization
+```bash
+# initialize my-workspace for the example-application (main branch)
+west init -m git@github.com:zephyrproject-rtos/example-application --mr main vcu-fw-ws
+# update Zephyr modules
+cd vcu-fw-ws
+west update
+```
+
+### Building the Firmware
+the `$BOARD` is the target you're trying to build with. For starters you could compile for the `nucleo_h563zi` development board.
+```bash
+cd vcu-vcu-fw_2026
+west build -b $BOARD app # $BOARD is nucleo_h563zi
+```
+If you want to get debugging outputs (i.e. enable logging and shell), you can attach additional CLI params; 
+```bash
+west build -b $BOARD app -- -DEXTRA_CONF_FILE=debug.conf
+```
+
+Once it's built, you flash it by plugging in the st-link (or the dev board) and running:
+```bash
+west flash
+```
+
+### Running Unit Tests
+Where required, you may also run unit tests. Run tests as follows:
+```bash
+west twister -T tests --platform qemu_cortex_m0
+```
+
 ---
 
 ## System Context
