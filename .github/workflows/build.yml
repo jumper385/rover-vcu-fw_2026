@@ -79,7 +79,7 @@ jobs:
 
       - name: Twister Tests
         working-directory: example-application
-        run: west twister -T tests -v --inline-logs --integration --output-dir twister-out
+        run: west twister -T tests --platform qemu_cortex_m0
 
   release:
     name: Release
