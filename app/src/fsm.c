@@ -6,7 +6,7 @@ int fsm_init(struct VCUState *state) {
   return 0;
 }
 
-int update_state(struct VCUState *state, enum FSMTransitions transition) {
+int fsm_update_state(struct VCUState *state, enum FSMTransitions transition) {
   state->ns = state->cs;
 
   switch (state->cs) {
@@ -63,6 +63,8 @@ int update_state(struct VCUState *state, enum FSMTransitions transition) {
     state->ns = FSM_ABORTED;
     break;
   }
+
+  state->cs = state->ns;
 
   return 0;
 }

@@ -1,6 +1,6 @@
 #pragma once
-#include <zephyr/kernel.h>
 #include "app_types.h"
+#include <zephyr/kernel.h>
 
 int fsm_init(struct VCUState *state);
-int update_state(struct VCUState *state, enum FSMTransitions transition);
+int fsm_update_state(struct VCUState *state, enum FSMTransitions transition);
