@@ -1,3 +1,4 @@
+#pragma once
 #include "../app_types.h"
 
 struct InputPorts {
@@ -17,3 +18,7 @@ struct VCUPorts {
   struct InputPorts in;
   struct OutputPorts out;
 };
+
+int ports_init(struct VCUPorts *ports);
+int ports_read_inputs(struct VCUPorts *ports);
+int ports_write_outputs(struct VCUPorts *ports);
