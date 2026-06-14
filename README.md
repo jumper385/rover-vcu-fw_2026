@@ -14,7 +14,7 @@ That means the firmware does not blindly forward network commands to motors or a
 ### Initialization
 ```bash
 # initialize my-workspace for the example-application (main branch)
-west init -m git@github.com:zephyrproject-rtos/example-application --mr main vcu-fw-ws
+west init -m git@github.com:jumper385/rover-vcu-fw_2026 --mr main vcu-fw-ws
 # update Zephyr modules
 cd vcu-fw-ws
 west update
