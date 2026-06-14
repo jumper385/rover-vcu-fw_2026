@@ -1,0 +1,6 @@
+common:
+  tags: fsm
+  integration_platforms:
+    - qemu_cortex_m0
+tests:
+  app.fsm: {}
