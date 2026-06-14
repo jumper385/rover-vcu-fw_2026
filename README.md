@@ -177,6 +177,8 @@ stateDiagram-v2
 
 Top-level state should not explode into combinations like `DRIVE_ENABLED`, `ARM_ENABLED`, `FULL_OPERATION`, `DEGRADED_DRIVE_ONLY`, etc. Instead, use a small top-level state machine plus capability flags.
 
+By doing this, timer or work functions can be globally enabled forever however, when they do arrive at the events, the operation is gated by the capability flags.
+
 | Capability | Meaning |
 |---|---|
 | `drive_allowed` | Drive commands may be accepted. |

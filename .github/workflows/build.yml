@@ -52,31 +52,43 @@ jobs:
             example-application/build/zephyr/zephyr.hex
           if-no-files-found: warn
 
-  test:
-    name: Twister Tests
-    runs-on: ubuntu-22.04
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          path: example-application
-          persist-credentials: false
+test:
+  name: Twister Tests
+  runs-on: ubuntu-22.04
+  permissions:
+    checks: write
+    contents: read
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        path: example-application
+        persist-credentials: false
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: 3.12
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: 3.12
 
-      - name: Setup Zephyr project
-        uses: zephyrproject-rtos/action-zephyr-setup@v1
-        with:
-          app-path: example-application
-          toolchains: arm-zephyr-eabi
-          ccache-cache-key: ubuntu-22.04-tests
+    - name: Setup Zephyr project
+      uses: zephyrproject-rtos/action-zephyr-setup@v1
+      with:
+        app-path: example-application
+        toolchains: arm-zephyr-eabi
+        ccache-cache-key: ubuntu-22.04-tests
 
-      - name: Twister Tests
-        working-directory: example-application
-        run: west twister -T tests -v --inline-logs --integration
+    - name: Twister Tests
+      working-directory: example-application
+      run: west twister -T tests -v --inline-logs --integration --output-dir twister-out
+      
+    - name: Publish Test Results
+      uses: dorny/test-reporter@v1
+      if: always()
+      with:
+        name: Zephyr Twister Results
+        path: example-application/twister-out/twister.xml
+        reporter: java-junit
+        fail-on-error: true
 
   release:
     name: Release
