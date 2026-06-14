@@ -80,15 +80,6 @@ jobs:
       - name: Twister Tests
         working-directory: example-application
         run: west twister -T tests -v --inline-logs --integration --output-dir twister-out
-        
-      - name: Publish Test Results
-        uses: dorny/test-reporter@v1
-        if: always()
-        with:
-          name: Zephyr Twister Results
-          path: example-application/twister-out/twister.xml
-          reporter: java-junit
-          fail-on-error: true
 
   release:
     name: Release
