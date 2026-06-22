@@ -62,6 +62,8 @@ struct UDPTransmittedPacket {
 };
 
 int udp_transport_init(struct UDPTransport *udp_transport);
+struct UDPReceivedPacket udp_transport_rx_parse(struct UDPTransport *udp_transport,
+                                                uint8_t *buf, ssize_t len);
 void udp_rx_thread(void *p1, void *p2, void *p3);
 struct UDPReceivedPacket
 udp_transport_rx_parse(struct UDPTransport *udp_transport, uint8_t *buf,

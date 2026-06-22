@@ -82,13 +82,13 @@ udp_transport_rx_parse(struct UDPTransport *udp_transport, uint8_t *buf,
 
   switch (pkt.type) {
 
-  case PKT_RX_DRIVE_POS_CMD:
+  case PKT_RX_DRIVE_VEL_CMD:
     if (payload_len < (ssize_t)sizeof(pkt.drive_vel_cmd))
       goto too_short;
     memcpy(&pkt.drive_vel_cmd, payload, sizeof(pkt.drive_vel_cmd));
     break;
 
-  case PKT_RX_DRIVE_VEL_CMD:
+  case PKT_RX_DRIVE_POS_CMD:
     if (payload_len < (ssize_t)sizeof(pkt.drive_pos_cmd))
       goto too_short;
     memcpy(&pkt.drive_pos_cmd, payload, sizeof(pkt.drive_pos_cmd));
