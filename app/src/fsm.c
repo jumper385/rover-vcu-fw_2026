@@ -67,12 +67,8 @@ int fsm_update_state(struct VCUState *state, enum FSMTransitions transition) {
   return 0;
 }
 
-int fsm_commit_state(struct VCUState *state) {
-  state->cs = state->ns;
-  return 0;
-}
-
-enum FSMTransitions fsm_do_state(struct VCUState *state, struct VCUPorts *ports) {
+enum FSMTransitions fsm_do_state(struct VCUState *state,
+                                 struct VCUPorts *ports) {
 
   switch (state->cs) {
 
@@ -113,4 +109,12 @@ enum FSMTransitions fsm_do_state(struct VCUState *state, struct VCUPorts *ports)
   default:
     break;
   }
+
+  // really shouldn't be here...
+  return TRAN_EVT_ABORT;
+}
+
+int fsm_commit_state(struct VCUState *state) {
+  state->cs = state->ns;
+  return 0;
 }
