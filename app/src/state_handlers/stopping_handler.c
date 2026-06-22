@@ -1,6 +1,6 @@
 #include "state_handlers.h"
 
-int stopping_handler(struct VCUState *state, struct VCUPorts *ports)
+enum FSMTransitions stopping_handler(struct VCUState *state, struct VCUPorts *ports)
 {
-  return 0;
+  return TRAN_EVT_NONE;
 }

@@ -64,7 +64,53 @@ int fsm_update_state(struct VCUState *state, enum FSMTransitions transition) {
     break;
   }
 
-  state->cs = state->ns;
-
   return 0;
+}
+
+int fsm_commit_state(struct VCUState *state) {
+  state->cs = state->ns;
+  return 0;
+}
+
+enum FSMTransitions fsm_do_state(struct VCUState *state, struct VCUPorts *ports) {
+
+  switch (state->cs) {
+
+  case FSM_BOOTING:
+    execute_handler(state, ports);
+    break;
+  case FSM_STOPPING:
+    stopped_handler(state, ports);
+    break;
+  case FSM_IDLE:
+    idle_handler(state, ports);
+    break;
+  case FSM_EXECUTE:
+    execute_handler(state, ports);
+    break;
+  case FSM_HOLDING:
+    holding_handler(state, ports);
+    break;
+  case FSM_HELD:
+    held_handler(state, ports);
+    break;
+  case FSM_SUSPENDING:
+    suspending_handler(state, ports);
+    break;
+  case FSM_SUSPENDED:
+    suspended_handler(state, ports);
+    break;
+  case FSM_ABORTING:
+    aborting_handler(state, ports);
+    break;
+  case FSM_ABORTED:
+    aborted_handler(state, ports);
+    break;
+  case FSM_CLEARING:
+    clearing_handler(state, ports);
+    break;
+
+  default:
+    break;
+  }
 }

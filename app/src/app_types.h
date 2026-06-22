@@ -18,6 +18,7 @@ enum FSMStates {
 };
 
 enum FSMTransitions {
+  TRAN_EVT_NONE,
   TRAN_EVT_ENABLE,
   TRAN_EVT_BOOTED,
   TRAN_EVT_RUN,

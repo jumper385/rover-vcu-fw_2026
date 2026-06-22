@@ -1,6 +1,6 @@
 #include "state_handlers.h"
 
-int booting_handler(struct VCUState *state, struct VCUPorts *ports) {
+enum FSMTransitions booting_handler(struct VCUState *state, struct VCUPorts *ports) {
   // send state upstream
-  return 0;
+  return TRAN_EVT_NONE;
 }
