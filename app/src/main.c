@@ -1,4 +1,5 @@
 #include "udp_transport.h"
+#include "fsm_thread.h"
 #include <zephyr/kernel.h>
 #include <zephyr/net/net_mgmt.h>
 #include <zephyr/net/socket.h>
@@ -29,6 +30,7 @@ static void dhcp_handler(struct net_mgmt_event_callback *cb,
 
     LOG_INF("Received IP Lease: %s", buf);
     udp_transport_init(&udp_transport);
+    fsm_thread_start(&udp_transport);
   }
 }
 

@@ -69,49 +69,34 @@ int fsm_update_state(struct VCUState *state, enum FSMTransitions transition) {
 
 enum FSMTransitions fsm_do_state(struct VCUState *state,
                                  struct VCUPorts *ports) {
-
   switch (state->cs) {
-
   case FSM_BOOTING:
-    execute_handler(state, ports);
-    break;
-  case FSM_STOPPING:
-    stopped_handler(state, ports);
-    break;
+    return booting_handler(state, ports);
+  case FSM_STOPPED:
+    return stopped_handler(state, ports);
   case FSM_IDLE:
-    idle_handler(state, ports);
-    break;
+    return idle_handler(state, ports);
   case FSM_EXECUTE:
-    execute_handler(state, ports);
-    break;
+    return execute_handler(state, ports);
   case FSM_HOLDING:
-    holding_handler(state, ports);
-    break;
+    return holding_handler(state, ports);
   case FSM_HELD:
-    held_handler(state, ports);
-    break;
+    return held_handler(state, ports);
+  case FSM_STOPPING:
+    return stopping_handler(state, ports);
   case FSM_SUSPENDING:
-    suspending_handler(state, ports);
-    break;
+    return suspending_handler(state, ports);
   case FSM_SUSPENDED:
-    suspended_handler(state, ports);
-    break;
+    return suspended_handler(state, ports);
   case FSM_ABORTING:
-    aborting_handler(state, ports);
-    break;
+    return aborting_handler(state, ports);
   case FSM_ABORTED:
-    aborted_handler(state, ports);
-    break;
+    return aborted_handler(state, ports);
   case FSM_CLEARING:
-    clearing_handler(state, ports);
-    break;
-
+    return clearing_handler(state, ports);
   default:
-    break;
+    return TRAN_EVT_NONE;
   }
-
-  // really shouldn't be here...
-  return TRAN_EVT_ABORT;
 }
 
 int fsm_commit_state(struct VCUState *state) {

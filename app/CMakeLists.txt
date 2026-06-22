@@ -12,7 +12,9 @@ project(app LANGUAGES C)
 target_sources(app PRIVATE 
     src/main.c
     src/fsm.c
+    src/fsm_thread.c
     src/udp_transport.c
+    src/ports/ports.c
     src/state_handlers/booting_handler.c
     src/state_handlers/stopped_handler.c
     src/state_handlers/idle_handler.c

@@ -113,8 +113,8 @@ udp_transport_rx_parse(struct UDPTransport *udp_transport, uint8_t *buf,
   return pkt;
 
 too_short:
-  LOG_WRN("Payload too short for type %d (%zd bytes), dropping...", pkt.type,
-          payload_len);
+  LOG_WRN("Payload too short for type 0x%02x (%zd bytes), dropping...",
+          pkt.type, payload_len);
   return empty_pkt;
 }
 
