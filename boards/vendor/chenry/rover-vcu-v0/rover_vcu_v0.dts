@@ -21,13 +21,15 @@
 		zephyr,sram = &sram1;
 		zephyr,flash = &flash0;
 		zephyr,code-partition = &slot0_partition;
+		zephyr,canbus = &fdcan1;
 	};
 
 	aliases {
-		led0 = &green_led_1;
-		sw0 = &user_button;
+		led0 = &led0;
+		led1 = &led1;
+		led2 = &led2;
+		sw0 = &estop_btn;
 		watchdog0 = &iwdg;
-		pwm-led0 = &pwm_led_1;
 		volt-sensor0 = &vref;
 		volt-sensor1 = &vbat;
 	};
