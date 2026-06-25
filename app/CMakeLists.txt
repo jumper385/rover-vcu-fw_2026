@@ -11,6 +11,7 @@ project(app LANGUAGES C)
 
 target_sources(app PRIVATE 
     src/main.c
+    src/dhcp_req.c
     src/fsm.c
     src/fsm_thread.c
     src/udp_transport.c
