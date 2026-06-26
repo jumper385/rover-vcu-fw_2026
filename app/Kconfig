@@ -10,6 +10,13 @@ menu "Zephyr"
 source "Kconfig.zephyr"
 endmenu
 
+config VCU_PORTS_MOCK
+    bool "Use mock port implementations for testing and debug"
+    default n
+    help
+        replace real driver-backed port read/write with static mock data. 
+        enable in debug.conf
+
 module = APP
 module-str = APP
 source "subsys/logging/Kconfig.template.log_config"
