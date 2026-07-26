@@ -126,8 +126,9 @@
 	pinctrl-names = "default";
 
 	eth_phy: ethernet-phy@0 {
-		compatible = "ethernet-phy";
+		compatible = "ti,dp83tc812";
 		reg = <0x00>;
+		master-slave = "master";
 	};
 };
 

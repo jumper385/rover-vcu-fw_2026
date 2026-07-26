@@ -1,0 +1,9 @@
+# SPDX-License-Identifier: Apache-2.0
+
+config PHY_TI_DP83TC812
+	bool "TI DP83TC812 100BASE-T1 PHY driver"
+	default y
+	depends on DT_HAS_TI_DP83TC812_ENABLED
+	select MDIO
+	help
+	  Enable driver for the TI DP83TC812 100BASE-T1 automotive Ethernet PHY.

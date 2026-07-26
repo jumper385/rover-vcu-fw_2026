@@ -1,0 +1,28 @@
+# SPDX-License-Identifier: Apache-2.0
+
+description: TI DP83TC812 100BASE-T1 Automotive Ethernet PHY
+
+compatible: "ti,dp83tc812"
+
+include: ethernet-phy-common.yaml
+
+on-bus: mdio
+
+properties:
+  reg:
+    required: true
+    description: PHY MDIO address
+
+  master-slave:
+    type: string
+    required: true
+    description: |
+      100BASE-T1 master/slave operating mode.
+      - "master": PHY operates as link master
+      - "slave":  PHY operates as link slave
+      - "auto":   PHY alternates between master and slave until the link
+                  is established (useful when the peer is also in auto mode)
+    enum:
+      - "master"
+      - "slave"
+      - "auto"
