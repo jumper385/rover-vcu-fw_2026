@@ -1,3 +1,9 @@
+## 0.2.0 (2026-09-11)
+
+### Feat
+
+- added usb uart output for debug
+
 ## 0.1.0 (2026-09-03)
 
 ### Feat
