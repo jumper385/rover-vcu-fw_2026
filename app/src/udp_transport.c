@@ -59,7 +59,7 @@ int udp_transport_init(struct UDPTransport *udp_transport) {
 
   struct can_timing timing;
 
-  ret = can_calc_timing(can_dev_0, &timing, 250000, 875);
+  ret = can_calc_timing(can_dev_0, &timing, 1000000, 875);
   if (ret > 0) {
     LOG_INF("Sample-Point error: %d", ret);
   }
