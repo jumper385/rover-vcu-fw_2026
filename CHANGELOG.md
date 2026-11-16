@@ -1,3 +1,9 @@
+## 0.2.1 (2026-11-16)
+
+### Fix
+
+- HOTFIX; using 1Mbit/sec before adding mem stuff for configurable
+
 ## 0.2.0 (2026-09-11)
 
 ### Feat
